@@ -90,7 +90,7 @@ $request->setBody('[
       "ReferenceID": "MSB4Vj8zfsbW/t8THdyFfbGQ==",
       "CreatorNameCode": "XCar",
       "SenderNameCode": "XCar",
-      "Url": "https://int.xcar.ch/de/d/XCar-urban-ev?vehid=6339162"
+      "Url": "https://int.xcar.ch/de/d/xcar-v8-superspeed?vehid=6339162"
     },
     "CreationDateTime": "2019-03-20T11:19:36.686Z",
     "Destination": {
@@ -649,13 +649,13 @@ The Vehicle Object contains the most important data about the vehicle.
 ```json
 [
   {
-    "Origin":"XCar-URBAN-EV-COS-IPROS-0419",
+    "Origin":"xcar-v8-superspeed-COS-IPROS-0419",
     "Sender": {
       "TaskID": "ProcessSalesLead",
       "ReferenceID": "MSB4Vj8zfsbW/t8THdyFfbGQ==",
       "CreatorNameCode": "XCar",
       "SenderNameCode": "XCar",
-      "Url": "https://int.xcar.ch/de/d/XCar-urban-ev?vehid=6339162"
+      "Url": "https://int.xcar.ch/de/d/xcar-v8-superspeed?vehid=6339162"
     },
     "CreationDateTime": "2019-03-20T11:19:36.686Z",
     "Destination": {
