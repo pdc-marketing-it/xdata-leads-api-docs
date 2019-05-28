@@ -1,10 +1,10 @@
-# pdc Leads API
+# Honda Leads
 
 ## Purpose of this document
 
-This document defines the request protocol and data structure for `SalesLeads` that **XCar** sends to **pdc Marketing & Information Technology AG** for processing.
+This document defines the request protocol and data structure for `SalesLeads` that **Honda** sends to **pdc Marketing & Information Technology AG** for processing.
 
-> THE SCHEMA PRESENTED IN THIS DOCUMENT IS NOT FINAL AND WILL BE REDUCED OR EXPANDED ACCORDING TO THE REQUIREMENTS OF XCAR SUISSE SA.
+> THE SCHEMA PRESENTED IN THIS DOCUMENT IS NOT FINAL AND WILL BE REDUCED OR EXPANDED ACCORDING TO THE REQUIREMENTS OF HONDA SUISSE SA.
 
 ## Document history
 
@@ -12,7 +12,7 @@ This document defines the request protocol and data structure for `SalesLeads` t
 |-|-|-|-|
 | 0.1 |17.05.2019| aklee | Setup document |
 
-## Documentation
+## pdc Leads API
 
 > Online documentation will be available once the project is approved by both parties.
 
@@ -84,13 +84,13 @@ $request->setHeaders(array(
 
 $request->setBody('[
   {
-    "Origin":"TEST-ORIGIN",
+    "Origin":"HONDA-URBAN-EV-COS-IPROS-0419",
     "Sender": {
       "TaskID": "ProcessSalesLead",
       "ReferenceID": "MSB4Vj8zfsbW/t8THdyFfbGQ==",
-      "CreatorNameCode": "XCar",
-      "SenderNameCode": "XCar",
-      "Url": "https://int.xcar.ch/de/d/XCar-urban-ev?vehid=6339162"
+      "CreatorNameCode": "Honda",
+      "SenderNameCode": "Honda",
+      "Url": "https://int.honda.ch/de/d/honda-urban-ev?vehid=6339162"
     },
     "CreationDateTime": "2019-03-20T11:19:36.686Z",
     "Destination": {
@@ -137,10 +137,10 @@ $request->setBody('[
       ],
       "Vehicle": {
         "VehicleID": 6339162,
-        "MakeString": "XCar",
-        "ModelString": "V8 Superspeed",
-        "ModelDescription": "XCar V8 Superspeed",
-        "Url": "https://int.xcar.ch/6339162",
+        "MakeString": "Honda",
+        "ModelString": "Urban EV",
+        "ModelDescription": "Honda Urban EV",
+        "Url": "https://int.honda.ch/6339162",
         "VIN": "12345678901234567"
       }
     }
@@ -309,10 +309,10 @@ The Vehicle Object contains the most important data about the vehicle.
 {
     "Vehicle": {
         "VehicleID": 6339162,
-        "MakeString": "XCar",
-        "ModelString": "V8 Superspeed",
-        "ModelDescription": "XCar V8 Superspeed",
-        "Url": "https://int.xcar.ch/6339162",
+        "MakeString": "Honda",
+        "ModelString": "Urban EV",
+        "ModelDescription": "Honda Urban EV",
+        "Url": "https://int.honda.ch/6339162",
         "VIN": "12345678901234567"
     }
 }
@@ -649,13 +649,13 @@ The Vehicle Object contains the most important data about the vehicle.
 ```json
 [
   {
-    "Origin":"XCar-URBAN-EV-COS-IPROS-0419",
+    "Origin":"HONDA-URBAN-EV-COS-IPROS-0419",
     "Sender": {
       "TaskID": "ProcessSalesLead",
       "ReferenceID": "MSB4Vj8zfsbW/t8THdyFfbGQ==",
-      "CreatorNameCode": "XCar",
-      "SenderNameCode": "XCar",
-      "Url": "https://int.xcar.ch/de/d/XCar-urban-ev?vehid=6339162"
+      "CreatorNameCode": "Honda",
+      "SenderNameCode": "Honda",
+      "Url": "https://int.honda.ch/de/d/honda-urban-ev?vehid=6339162"
     },
     "CreationDateTime": "2019-03-20T11:19:36.686Z",
     "Destination": {
@@ -703,10 +703,10 @@ The Vehicle Object contains the most important data about the vehicle.
       ],
       "Vehicle": {
         "VehicleID": 6339162,
-        "MakeString": "XCar",
-        "ModelString": "V8 Superspeed",
-        "ModelDescription": "XCar V8 Superspeed",
-        "Url": "https://int.xcar.ch/6339162",
+        "MakeString": "Honda",
+        "ModelString": "Urban EV",
+        "ModelDescription": "Honda Urban EV",
+        "Url": "https://int.honda.ch/6339162",
         "VIN": "12345678901234567"
       }
     }
