@@ -1,4 +1,4 @@
-# Honda Leads
+# pdc Leads API
 
 ## Purpose of this document
 
@@ -11,8 +11,9 @@ This document defines the request protocol and data structure for `SalesLeads` t
 |Version|Datum|Autor|Beschreib|
 |-|-|-|-|
 | 0.1 |17.05.2019| aklee | Setup document |
+| 0.2 |13.06.2019| aklee | Added response description |
 
-## pdc Leads API
+## Documentation
 
 > Online documentation will be available once the project is approved by both parties.
 
@@ -52,13 +53,50 @@ Based upon your specific requirements there might be additional information requ
 
 ### Resources
 
-#### leads
-
-Currently there is one method available for you to send your data to **pdc**.
+Currently there are two resources available for you to send data to **pdc** and check successful transmission.
 
 |Method|Resource|Version|Url|
 |-|-|-|-|
 |`POST`| `leads` |v1| `https://connectors-d.pdc-online.com/xdata/api/v1/leads?access_token={token}` |
+|`GET`| `leads/{id}` |v1| `https://connectors-d.pdc-online.com/xdata/api/v1/leads/{id}?access_token={token}` |
+
+#### POST /leads
+
+
+##### Parameters
+
+|Name <sup>(context)</sup>|Type|Description|
+|-|-|-|
+|`payload` &nbsp;<sup>(body)</sup> | *see Appendix B: Schema* | The payload you send in your request body. |
+
+##### Responses
+
+|Code|Description|
+|-|-|
+|`201 (Created)` |Successful submission <br><br>*Sample response:* <code><br>`"e84de886-776c-4dfa-a31a-dd550884fd94"`</code>|
+|`400 (Bad request)` | Request rejected (invalid schema). <br><br>*Sample response*: <code><br>{<br>&nbsp;&nbsp;"Success": false,<br>&nbsp;&nbsp;"StatusCode": 400,<br>&nbsp;&nbsp;"Message": "Validation failed!",<br>&nbsp;&nbsp;"Errors": [<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Message": "Required properties are missing from object: Origin.",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LineNumber": 2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LinePosition": 5,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Path": "[0]",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Value": [<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Origin"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SchemaId": "#/definitions/ProcessSalesLeadElement",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SchemaBaseUri": null,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ErrorType": "required",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ChildErrors": []<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;]<br>}</code>|
+|`409 (Conflict)` | Request rejected (duplicate entry). <br><br>*Sample response:*<br>`No content`  |
+|`500 (Internal Server Error)` | Something went wrong on our side.<br><br>*Sample response:*<br>`Error message created by the server` |
+|||
+
+#### GET /leads/{id}
+
+##### Parameters
+
+|Name <sup>(context)</sup>|Type|Description|
+|-|-|-|
+|`id` &nbsp;<sup>(query)</sup> | `Guid` | The Guid returned on successful `POST` to the `leads` resource. |
+
+##### Responses
+
+|Code|Description|
+|-|-|
+|`200 (OK)` |OK<br><br>*Sample response:*<br>`Your transmitted payload`|
+|`401 (Unauthorized)` | Request rejected (Invalid credentials). <br><br>*Sample response:*<br>`No content`  |
+|`404 (Not found)`|Id not found.<br><br>*Sample response:*<br>`No content`|
+|`409 (Conflict)` | Request rejected (duplicate entry). <br><br>*Sample response:*<br>`No content`  |
+|`500 (Internal Server Error)` | Something went wrong on our side.<br><br>*Sample response:*<br>`Error message created by the server` |
+|||
 
 #### Example
 
