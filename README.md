@@ -101,7 +101,7 @@ Transmits leads to pdc.
 
 |Name <sup>(context)</sup>|Type|Description|
 |-|-|-|
-|`access_token` &nbsp;<sup>(query)</sup> | `string` | The payload you send in your request body. |
+|`access_token` &nbsp;<sup>(query)</sup> | `string` | The token that grants access to the `leads` resource. |
 |`payload` &nbsp;<sup>(body)</sup> | *see Appendix C: Schema* | The payload you send in your request body. |
 
 #### Sample HTTP Request
@@ -135,7 +135,7 @@ Displays the schema your leads are validated against.
 
 |Name <sup>(context)</sup>|Type|Description|
 |-|-|-|
-|`access_token` &nbsp;<sup>(query)</sup> | `string` | The payload you send in your request body. |
+|`access_token` &nbsp;<sup>(query)</sup> | `string` | The token that grants access to the `leads` resource. |
 
 #### Responses
 
@@ -174,7 +174,7 @@ Display all leads - using pagination - that have been transmitted.
 |Name <sup>(context)</sup>|Type|Description|
 |-|-|-|
 |`id` &nbsp;<sup>(path)</sup> | `Guid` | The Guid returned on successful `POST` to the `leads` resource. |
-|`access_token` &nbsp;<sup>(query)</sup> | `string` | The Guid returned on successful `POST` to the `leads` resource. |
+|`access_token` &nbsp;<sup>(query)</sup> | `string` |The token that grants access to the `leads` resource. |
 #### Responses
 
 |Code|Description|
@@ -184,9 +184,7 @@ Display all leads - using pagination - that have been transmitted.
 
 ## Appendix A: Samples
 
-> Always send leads from your server and never from the client directly! We **very strongly** advice against sending user data from the client. (For example using Ajax POST on form submit).
->
-> Make sure to store leads on your local database first, before transmitting data to `pdc Leads API`.
+> We **very strongly** advice against sending user data from the client. (For example using Ajax POST on form submit). Always access the leads API from your server.
 >
 > Also, CORS is disabled on PDC servers.
 
@@ -194,8 +192,41 @@ Display all leads - using pagination - that have been transmitted.
 
 #### Post From Server (PHP)
 
+```html
+ <form action="post-method.php" method="post">
+    <input type="text" name="firstname" placeholder="First Name" />
+    <input type="text" name="lastname" placeholder="Last Name" />
+    <input type="text" name="telephone" placeholder="Telephone" />
+    <input type="text" name="email" placeholder="Email" />
+    <input type="submit" name="submit" />
+</form>
+```
+
 ```php
 <?php
+
+$firstname = $_POST['firstname'];
+$lastname = $_POST['lastname'];
+$telephone = $_POST['telephone'];
+$email = $_POST['email'];
+
+$lead = '[
+  {
+    [[REDACTED FOR BREVITY]]
+      "Customer": {
+        "FirstName1": "%firstname%",
+        "LastName1": "%lastname%",
+        "TelP1": "%telephone%",
+        "EmailP1": "%email&"
+      }
+    [[REDACTED FOR BREVITY]]
+  }
+]';
+
+$lead = str_replace("%firstname%", $firstname, $lead);
+$lead = str_replace("%lastname%", $lastname, $lead);
+$lead = str_replace("%telephone%", $telephone, $lead);
+$lead = str_replace("%email%", $email, $lead);
 
 $request = new HttpRequest();
 $request->setUrl('https://connectors.pdc-online.com/xdata/api/v1/leads');
@@ -212,74 +243,7 @@ $request->setHeaders(array(
   'Content-Type' => 'application/json'
 ));
 
-$request->setBody('[
-  {
-    "Origin":"TEST-ORIGIN",
-    "Sender": {
-      "TaskID": "ProcessSalesLead",
-      "ReferenceID": "MSB4Vj8zfsbW/t8THdyFfbGQ==",
-      "CreatorNameCode": "XCar",
-      "SenderNameCode": "XCar",
-      "Url": "https://int.xcar.ch/de/d/xcar-v8-superspeed?vehid=6339162"
-    },
-    "CreationDateTime": "2019-03-20T11:19:36.686Z",
-    "Destination": {
-      "DealerNumberID": 35228,
-      "DealerTargetCountry": "CH"
-    },
-    "SalesLead": {
-      "ID": 31740371,
-      "CustomerComments": "test",
-      "LeadCreationsDateTime": "2019-03-20T11:19:36.686Z",
-      "LeadComments": "#ms24.publicweb.DealerPage.Text.TextResource#",
-      "LeadTypeCode": "I",
-      "PreferredLanguageCode": "de-CH",
-      "LeadRequestTypeString": "Contact Request",
-      "Customer": {
-        "LastName1": "test",
-        "TelP1": "+41799999999",
-        "EmailP1": "test@test.com"
-      },
-      "Privacy": [
-        {
-          "Reason": "Marketing",
-          "Disclaimer": null,
-          "Consents": [
-            {
-              "Type": "Post",
-              "Value": "None"
-            },
-            {
-              "Type": "Telephone",
-              "Value": "None"
-            },
-            {
-              "Type": "SMS",
-              "Value": "OptOut"
-            },
-            {
-              "Type": "Email",
-              "Value": "OptIn"
-            }
-          ]
-        },
-        {
-          "Reason": "Profiling",
-          "Disclaimer": null,
-          "Consents": []
-        }
-      ],
-      "Vehicle": {
-        "VehicleID": 6339162,
-        "MakeString": "XCar",
-        "ModelString": "V8 Superspeed",
-        "ModelDescription": "XCar V8 Superspeed",
-        "Url": "https://int.xcar.ch/6339162",
-        "VIN": "12345678901234567"
-      }
-    }
-  }
-]');
+$request->setBody($lead);
 
 try {
   $response = $request->send();
@@ -292,7 +256,7 @@ try {
 
 #### POST from Client (Discouraged)
 
-Out of **security considerations** it is highly discouraged to send user data / leads from the client.
+Out of **security considerations** it is highly discouraged to send user data / leads from the client (ie Webbrowser).
 
 ## Appendix B: Message Content Objects
 
@@ -315,7 +279,7 @@ The Privacy-Node is an array which contains 0 to n Purposes.
 
 ### Purpose-Object
 
-A Purpose-Object defines the reason of consent and 0 to n explicit consents for which the customer-data can be used (`OptIn`) / can not be used (`OptOut`).  
+A Purpose-Object defines the reason of consent and 0 to n **explicit consents** for which the customer-data can be used (`OptIn`) / can not be used (`OptOut`).  
 
 #### Purpose-Definition
 
@@ -384,7 +348,7 @@ A complete Purpose for für den Type `Marketing` looks as follows:
 }
 ```
 
-As stated above, Consents are to be given for each reason explicitly by the customer. `null` or `""` does not equal to an `OptOut`!
+As stated above, Consents are to be given explicitly by the customer. `null` or `""` does not equal to an `OptOut`!
 
 ### Vehicle Object
 
